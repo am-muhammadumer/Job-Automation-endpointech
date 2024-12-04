@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+Home - AutoJobs
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+{% block content %}
+<div class="intro">
+    <div class="intro_text">
+        <h1>AutoJobs helps you get 3x more interviews using automation</h1>
+        <p>Upload your CV, Select the type of Job You Want, and Press Start! AutoJobs will Mass Apply on your behalf Every Single Day</p>
+        <a href="/pricing">Get Started</a>
+        <div class="free_text">
+            <p>Start for free</p>
+        </div>
+    </div>
+    <div class="intro_img">
+        <img src="{{url_for('static', filename='img/intro_img.png')}}" alt="intro_img">
+    </div>
+</div>
+<div class="moreInfoSection">
+    <div class="secondInfoSection">
+        <div class="firstInfoBox">
+            <p>All your job searches in one place</p>
+            <h1>Check statistics for your searches (AutoJobs)</h1>
+            <p>With advanced filters, keyword search, company exclusion and much more, AutoJobs gives you the opportunity to automaticaly apply only to jobs that you really like</p>
+        </div>
+        <div>
+            <img src="{{url_for('static', filename='img/img-3.png')}}" alt="secondImage">
+        </div>
+    </div>
+
+    <div class="thirdInfoSection">
+        <div>
+            <img src="{{url_for('static', filename='img/img-2.png')}}" alt="secondImage">
+        </div>
+        <div class="secondInfoBox">
+            <p>All your job searches in one place</p>
+            <h1>View the details and statistics of each loop</h1>
+            <p>Every time we apply to jobs on your behalf we use your CV! We either send emails to companies, or auto-fill job application forms. Start sending your CV to hundreds of companies hiring</p>
+        </div>
+    </div>
+</div>
+<div class="avatarSection">
+    <div class="avatarBox">
+        <img src="{{url_for('static', filename='img/avatar.png')}}" alt="avatar">
+        <h1>John Doe</h1>
+        <p>“AutoJobs is a game changer! I was able to find my dream job in just a few weeks thanks to the automated job search feature. Highly recommended!”</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+Features - AutoJobs
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/features.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="features_section">
+    <h1>How AutoJobs works in 3 simple steps</h1>
+    <p>The process of finding a job is complicated and time-consuming. Hundreds of tools, a lot of copy-pasting. We have designed a unique process to allow anyone get a job faster with minimum effort.</p>
+
+    <div class="steps">
+        <div class="box">
+            <div class="backBox">
+                <div class="frontBox">1</div>
+            </div>
+            <h4>Create your profile and upload your CV</h4>
+        </div>
+        <div class="box">
+            <div class="backBox">
+                <div class="frontBox">2</div>
+            </div>
+            <h4>Select your desired job titles, locations and many other optional settings</h4>
+        </div>
+        <div class="box">
+            <div class="backBox">
+                <div class="frontBox">3</div>
+            </div>
+            <h4>AutoJobs will search for jobs and either apply on your behalf or give you total control of your applications</h4>
+        </div>    
+    </div>
+
+    <div class="infoBox">
+        <div class="infoCard">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            <h2>Auto apply to jobs</h2>
+            <p>AutoJobs collects new job postings every day, searching for jobs in your desired locations and automatically applies on your behalf. If you don't want to apply automatically you can check all the matched jobs manually and apply with one click!</p>
+            <button>Learn more</button>
+        </div>
+        <div class="infoCard">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            <h2>Auto email to Recruiters</h2>
+            <p>We automatically find the email of the recruiter in a company sending a personalised email. You can select an email template from our predefined set or create your own from scratch. AutoJobs will use this email to contact companies trying to hire people like you!</p>
+            <button>Learn more</button>
+        </div>
+        <div class="infoCard">
+            <i class="fa fa-signal" aria-hidden="true"></i>
+            <h2>Measure and improve</h2>
+            <p>AutoJobs collects statistics such as how many companies opened your email, how many companies replied and which of you CVs got more attention. You can A/B test different CVs, try different keywords and use AutoJobs as a tool to optimise your job search</p>
+            <button>Learn more</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

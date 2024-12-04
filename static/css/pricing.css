@@ -1,0 +1,148 @@
+/* General Pricing Section Styles */
+.pricing_section {
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(120deg, #f0f5f9, #ecf3f7);
+}
+
+.pricing_section h1 {
+    font-size: 43px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 15px;
+}
+
+.pricing_section p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 40px !important;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Pricing Boxes Container */
+.pricing_boxes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Ensures responsiveness */
+}
+
+/* Individual Pricing Box */
+.pricing_box {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 30px 20px;
+    width: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing_box:hover {
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Pricing Box Header */
+.pricing_box h2 {
+    font-size: 27px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.pricing_box h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.pricing_box p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Features List */
+.pricing_box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.pricing_box ul li {
+    font-size: 16px;
+    color: #444;
+    margin: 8px 0;
+    position: relative;
+    padding-left: 30px;
+}
+
+.pricing_box ul li::before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    right: 10px;
+    color: #004aad;
+    font-weight: bold;
+}
+
+/* Get Started Button */
+.pricing_box a {
+    display: inline-block;
+    background: linear-gradient(90deg, #004aad, #4a90e2);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 25px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pricing_box a:hover {
+    background: linear-gradient(90deg, #00347c, #357bcf);
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pricing_boxes {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pricing_box {
+        width: 90%; /* Take up most of the width on smaller screens */
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing_section h1 {
+        font-size: 28px;
+    }
+
+    .pricing_section p {
+        font-size: 16px;
+    }
+
+    .pricing_box h2 {
+        font-size: 20px;
+    }
+
+    .pricing_box h3 {
+        font-size: 18px;
+    }
+
+    .pricing_box ul li {
+        font-size: 14px;
+    }
+
+    .pricing_box a {
+        padding: 10px 20px;
+    }
+}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contact - AutoJobs
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="contact_section">
+    <div class="contact_form_box">
+        <h1>Contact Us</h1>
+        <p>Have a question or need help? Contact our support team and we'll be happy to assist you.</p>
+        <form action="/contact" method="post">
+            <input name="name" type="text" placeholder="Enter your name here."
+                {% if current_user.is_authenticated %} value="{{ current_user.username }}" {% endif %} required>
+            <input name="email" type="email" placeholder="Enter your email here."
+                {% if current_user.is_authenticated %} value="{{ current_user.email }}" {% endif %} required>
+            <textarea name="message" placeholder="Leave Message" required></textarea>
+            <button>Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

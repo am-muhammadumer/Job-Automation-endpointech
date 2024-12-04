@@ -1,0 +1,146 @@
+
+/* Main Signup Section */
+.signup_section {
+    width: 100%;
+    padding-top: 50px;
+    margin-top: 0px;
+    padding-bottom: 70px;
+    text-align: center;
+    background: linear-gradient(120deg, #f0f5f9, #ecf3f7);
+
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Typography */
+.signup_section h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.signup_section p {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+.signup_form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input {
+    width: 90%;
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 1px solid #dcdfe3;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+form input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Button Styling */
+form button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form button:hover {
+    background-color: #2575fc;
+    box-shadow: 0 4px 8px rgba(37, 117, 252, 0.3);
+}
+
+form button:active {
+    background-color: #1c5ce1;
+}
+
+/* Signup Links */
+.signup_links {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.signup_links a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.signup_links a:hover {
+    color: #2575fc;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+        max-width: 90%;
+    }
+
+    .signup_section h1 {
+        font-size: 28px;
+    }
+
+    form input,
+    form button {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        /* max-width: 90%; */
+        padding: 25px 15px;
+    }
+
+    .signup_section h1 {
+        font-size: 30px;
+    }
+
+    form input,
+    form button {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        /* max-width: 70%; */
+        padding: 25px 20px;
+    }
+
+    .signup_section h1 {
+        font-size: 31px;
+    }
+
+    form input,
+    form button {
+        font-size: 15px;
+    }
+}

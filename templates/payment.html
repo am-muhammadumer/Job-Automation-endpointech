@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+Payment - AutoJobs
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+<script src="{{ url_for('static', filename='js/payment.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="payment-container">
+    <!-- Selected Plan Section -->
+    <div class="selected-plan">
+        <h2>Selected Plan</h2>
+        <p><strong>Plan:</strong> {{ plan }}</p> <!-- Display selected plan -->
+        <p><strong>Price:</strong> ${{ price }}/month</p> <!-- Display selected price -->
+    </div>
+
+    <!-- Payment Form Section -->
+    <div class="payment-form">
+        <h2>Payment Details</h2>
+        <form action="/payment" method="POST">
+            <!-- Hidden Fields for Plan and Price -->
+            <input type="hidden" name="plan" value="{{ plan }}">
+            <input type="hidden" name="price" value="{{ price }}">
+
+            <!-- Cardholder Name -->
+            <div class="form-group">
+                <label for="card-name">Cardholder Name</label>
+                <input type="text" id="card-name" name="card-name" placeholder="Enter Cardholder Name" required>
+            </div>
+
+            <!-- Card Number -->
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input 
+                    type="text" 
+                    id="card-number" 
+                    name="card-number" 
+                    placeholder="1234 5678 9012 3456" 
+                    pattern="(\d{4}[\s-]?){4}" 
+                    maxlength="19" 
+                    required
+                >
+            </div>
+
+            <div class="ExpCvv">
+                <!-- Expiry Date -->
+                <div class="form-group">
+                    <label for="expiry-date">Expiry Date</label>
+                    <input type="text" id="expiry-date" name="expiry-date" placeholder="MM / YY" pattern="\d{2} / \d{2}" maxlength="7" required>
+                </div>
+
+                <!-- CVV -->
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" pattern="\d{3}" maxlength="3" required>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Proceed to Payment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

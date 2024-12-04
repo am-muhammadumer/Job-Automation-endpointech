@@ -1,0 +1,197 @@
+.features_section{
+    background-color: #e9eff3;
+    /* height: 1200px; */
+    width: 100%;
+}
+
+.features_section h1{
+    font-size:48px;
+    color: #000000;
+    text-align: center;
+    padding-top: 70px;
+    margin-top: 0px;
+}
+
+.features_section p{
+    font-size: 16px;
+    color: #747474;
+    text-align: center;
+    margin-top: 20px;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.steps{
+    width: 65%;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap ;
+}
+
+.steps .box{
+    height: 200px;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.backBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 70px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    border: 1px solid #d1d1d1;
+}
+
+.frontBox{
+    height: 50px;
+    width: 50px;
+    background: #6495ed;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoBox{
+    width: 85%;
+    /* height: 500px; */
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.infoBox .infoCard{
+    height: 450px;
+    width: 30%;
+    background-color: #ffffff;
+}
+
+.infoCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
+    box-shadow: 0px 0px 10px 0px #d1d1d1;
+    cursor: pointer;
+    margin-bottom: 70px;
+}
+
+.infoCard:hover{
+    box-shadow: 0px 0px 20px 0px #514e4e;
+    transition: 0.7s;
+}
+
+.infoCard i{
+    font-size: 2rem;
+    color: #000000;
+}
+
+.infoCard h2{
+    font-size: 24px;
+    color: #000000;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.infoCard  p{
+    text-align: left;
+    word-spacing: 5px;
+    line-height: 1.5;
+    padding: 10px;
+    font-size: 16px;
+    color: #747474;
+}
+
+.infoCard button{
+    height:50px;
+    width: 150px;
+    background: transparent;
+    color: #0c87f3;
+    border: 1px solid #0c87f3;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 550;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.infoCard button:hover{
+    background-color: #0c87f3;
+    color: #ffffff;
+    box-shadow: 0px 0px 5px 0px #b3b3b3;
+    box-sizing: border-box;
+    transition: 0.2s;
+    width: 160px;
+    transition-duration: 0.2s;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 1200px) {
+    .steps .box {
+        width: 45%;
+    }
+    .infoBox .infoCard {
+        width: 45%;
+        margin-top: 20px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .steps .box {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .infoBox .infoCard {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+    .features_section h1 {
+        font-size: 36px;
+    }
+    .features_section p {
+        font-size: 14px;
+    }
+    .steps {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .features_section h1 {
+        font-size: 28px;
+    }
+    .features_section p {
+        font-size: 12px;
+        max-width: 100%;
+    }
+    .steps .box {
+        width: 100%;
+    }
+    .infoBox .infoCard {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+    .infoCard button {
+        width: 70%;
+        font-size: 14px;
+    }
+}

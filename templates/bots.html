@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Bots -AutoJobs
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bots.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- LinkedIn Bot Card -->
+  <div class="card">
+    <img src="{{ url_for('static', filename='img/logo_img.png') }}" alt="LinkedIn Bot" class="card-image">
+    <h2 class="card-title">LinkedIn Bot</h2>
+    <p class="card-description">
+      Automate your LinkedIn tasks with ease! Our LinkedIn Bot helps with connection requests, message automation, and profile management to save you time and boost your professional networking.
+    </p>
+    <div class="card-buttons">
+      <a href="#" class="cardBtn1">Get Started</a>
+      <a href="#" class="cardBtn2">View Stats</a>
+    </div>
+  </div>
+
+  <!-- Automation Bot Card -->
+  <div class="card">
+    <img src="{{ url_for('static', filename='img/logo_img.png') }}" alt="Automation Bot" class="card-image">
+    <h2 class="card-title">Automation Bot</h2>
+    <p class="card-description">
+      Streamline repetitive tasks across platforms with our Automation Bot. From data entry to workflow optimization, this bot is designed to increase your productivity and efficiency.
+    </p>
+    <div class="card-buttons">
+      <a href="/diceDashboard" class="cardBtn1">View Profiles</a>
+      <a href="#" class="cardBtn2">View Stats</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

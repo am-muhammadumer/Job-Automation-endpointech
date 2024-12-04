@@ -1,0 +1,104 @@
+/* General Payment Page Styles */
+.payment-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Selected Plan Section */
+.selected-plan {
+    text-align: center;
+    margin-bottom: 30px;
+    background: #004aad;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.selected-plan h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.selected-plan p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Payment Form Section */
+.payment-form h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.payment-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #004aad;
+    outline: none;
+}
+
+.ExpCvv {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Submit Button */
+.submit-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #004aad, #4a90e2);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+    background: linear-gradient(90deg, #00347c, #357bcf);
+    transform: scale(1.03);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 15px;
+    }
+
+    .ExpCvv {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

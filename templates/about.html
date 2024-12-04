@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+About - AutoJobs
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
+{% endblock %}
+{% block content %}
+<div class="about_section">
+    <div class="about_text">
+        <h1>About AutoJobs</h1>
+        <p>
+            Got it! Here's an "About Us" section tailored for your website AutoJobs, with an emphasis on automation and how it helps job seekers find jobs efficiently:
+            
+            About Us
+            
+            Welcome to AutoJobs – your smart, automated solution to finding the perfect job in the automotive industry. Whether you're an experienced technician, a passionate mechanic, or looking to start your career in the auto sector, AutoJobs is here to make your job search faster, easier, and more effective.
+            
+            At AutoJobs, we believe in the power of technology to transform the job search experience. Our platform uses advanced automation to match you with the best job opportunities in the automotive field based on your skills, preferences, and experience. With just a few clicks, AutoJobs automatically searches and suggests the most relevant jobs that fit your profile, saving you time and effort.</p>
+            <h2>Our Mission</h2>
+            <p>Our mission is to revolutionize the job search process for the automotive industry by using automation to connect job seekers with employers quickly and efficiently. We aim to make the job search seamless, so you can focus on what really matters—finding the perfect job and advancing your career.</p>
+            <h2>Why Choose AutoJobs?</h2>
+            <p id="points"><b>Automated Job Matching:</b> Our system automatically matches you with job listings that fit your profile, ensuring you're always presented with the best opportunities without wasting time. <br>
+                <b>Time-Saving:</b> Forget about endlessly scrolling through pages of irrelevant listings. AutoJobs brings the most relevant jobs straight to you, tailored to your experience and interests. <br>
+                <b>Specialized for the Automotive Industry:</b> Unlike general job boards, AutoJobs is 100% focused on the automotive sector. We offer jobs from leading auto businesses, ranging from mechanics and technicians to sales, customer service, and management roles. <br>
+                <b>Easy to Use:</b> Our platform is designed for simplicity. Upload your resume, set your preferences, and let the automation do the rest. It’s as easy as 1-2-3.</p>
+                <h2>For Employers</h2>
+                <p>For businesses in the automotive industry, AutoJobs makes hiring faster and more efficient. Our automated system helps you find qualified candidates quickly by matching your job postings with the right applicants, so you can fill your vacancies faster and more accurately.</p>
+                <h2>Join Us Today</h2>
+                <p>AutoJobs is here to make your job search smarter, faster, and more efficient. Join our growing community today and take the next step toward your future in the automotive industry.</p>
+
+    </div>
+</div>
+{% endblock %}

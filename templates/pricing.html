@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+Pricing - AutoJobs
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/pricing.css')}}">
+{% endblock %}
+{% block content %}
+<div class="pricing_section">
+    <h1>Choose the plan that works for you</h1>
+    <p>AutoJobs offers a range of plans to suit your needs. Whether you're just starting out in your career or looking to take the next step, we have a plan that's right for you.</p>
+
+    <div class="pricing_boxes">
+    <div class="pricing_box">
+        <h2>Basic</h2>
+        <h3>$3.99/month</h3>
+        <p>For job seekers who want to get started with AutoJobs</p>
+        <ul>
+            <li>Automated job matching</li>
+            <li>Basic email templates</li>
+            <li>Statistics tracking</li>
+            <li>Up to 5 job applications per month</li>
+        </ul>
+        <a href="/payment?plan=Basic&price=3.99">Get Started</a>
+    </div>
+    <div class="pricing_box">
+        <h2>Pro</h2>
+        <h3>$9.99/month</h3>
+        <p>For job seekers who want to take their job search to the next level</p>
+        <ul>
+            <li>Automated job matching</li>
+            <li>Advanced email templates</li>
+            <li>Statistics tracking</li>
+            <li>Up to 20 job applications per month</li>
+        </ul>
+        <a href="/payment?plan=Pro&price=9.99">Get Started</a>
+    </div>
+    <div class="pricing_box">
+        <h2>Premium</h2>
+        <h3>$19.99/month</h3>
+        <p>For job seekers who want the ultimate job search experience</p>
+        <ul>
+            <li>Automated job matching</li>
+            <li>Custom email templates</li>
+            <li>Statistics tracking</li>
+            <li>Unlimited job applications</li>
+        </ul>
+        <a href="/payment?plan=Premium&price=19.99">Get Started</a>
+    </div>
+</div>
+</div>
+{% endblock %}

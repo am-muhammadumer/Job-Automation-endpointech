@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard - AutoJobs
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="dashboard-container">
+    <!-- CV Upload Section -->
+    <section class="cv-upload-section">
+        <h2>Upload Your CV</h2>
+        <form  action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="cv">Upload CV</label>
+                <input type="file" id="cv" name="cv" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="job-title">Job Title</label>
+                <input type="text" id="job-title" name="job-title" class="form-control" placeholder="Enter Job Title" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="job-location" class="form-control" placeholder="Enter Job Location" required>
+            </div>
+            <div class="form-group">
+                <label for="job-description">Job Description</label>
+                <textarea id="job-description" name="job-description" class="form-control" rows="4" placeholder="Enter Job Description" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
+
+    <!-- Applying Jobs Section -->
+    <section class="applying-jobs-section">
+        <h2>Applied Jobs</h2>
+        <div class="jobs-list">
+            {% for job in applied_jobs %}
+            <div class="job-item">
+                <div class="job-title">
+                    <h4>{{ job.job_title }}</h4>
+                    <span class="status {{ job.status|lower }}">{{ job.status }}</span>
+                </div>
+                <p>Date Applied: {{ job.date_applied }}</p>
+                <div class="job-description">
+                    <p>{{ job.job_description }}</p>
+                </div>
+                <div class="job-buttons">
+                <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" style="display:inline;">
+                    <button id="delJobBtn" type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this job?')">Delete</button>
+                </form>
+            </div>
+            </div>
+            {% else %}
+            <p>No jobs applied yet. Start applying today!</p>
+            {% endfor %}            
+        </div>
+    </section>
+</main>
+{% endblock %}

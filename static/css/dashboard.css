@@ -1,0 +1,245 @@
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 30px; /* Added gap for consistent spacing */
+}
+
+/* Section Titles */
+h2 {
+    font-size: 26px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* CV Upload Section */
+.cv-upload-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cv-upload-section .form-group {
+    margin-bottom: 20px;
+}
+
+.cv-upload-section .form-group label {
+    font-size: 16px;
+    color: #34495e;
+}
+
+.cv-upload-section .form-control,
+.cv-upload-section .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    font-size: 14px;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+
+.cv-upload-section .form-control:focus,
+.cv-upload-section .form-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Subtle glow effect */
+}
+
+.cv-upload-section .form-group textarea {
+    height: 150px; /* Fixed height */
+    resize: none; /* Prevent resizing */
+}
+
+.cv-upload-section button {
+    background-color: #3498db;
+    border: none;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cv-upload-section button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* Applying Jobs Section */
+.applying-jobs-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.jobs-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Consistent spacing between jobs */
+}
+
+.job-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.job-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); /* Subtle lift */
+}
+
+.job-item h4 {
+    font-size: 18px;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.job-item p {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+.status {
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-transform: capitalize;
+}
+
+.status.applied {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.status.interviewed {
+    background-color: #f39c12;
+    color: #fff;
+}
+
+.status.rejected {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.job-buttons {
+    margin-top: 10px;
+}
+
+.job-buttons .btn {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.job-buttons .btn-info {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.job-buttons .btn-info:hover {
+    background-color: #2980b9;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 991px) {
+    .dashboard-container {
+        padding: 20px;
+    }
+
+    .cv-upload-section, .applying-jobs-section {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .cv-upload-section, .applying-jobs-section {
+        padding: 15px;
+    }
+
+    .job-item h4 {
+        font-size: 16px;
+    }
+
+    .job-item p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cv-upload-section .form-control {
+        font-size: 12px;
+    }
+
+    .cv-upload-section button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .job-item h4 {
+        font-size: 14px;
+    }
+
+    .status {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .cv-upload-section button {
+        width: 100%;
+    }
+}
+/* Hide dots in alert messages */
+.alert {
+    list-style-type: none !important; /* Removes any bullet points */
+    padding-left: 15px;  /* Adjust padding as needed */
+}
+
+.alert ul {
+    list-style-type: none !important; /* Ensures no dots in any unordered lists */
+}
+
+#delJobBtn {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    display: inline-block;    
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+#delJobBtn:hover {
+    background-color: #c0392b;
+}
