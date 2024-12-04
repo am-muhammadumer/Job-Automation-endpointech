@@ -1,0 +1,142 @@
+/* Form Container */
+.container {
+    margin: 20px auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px 40px;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Form Heading */
+.container h2 {
+    font-size: 24px;
+    color: #333333;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* Form Labels */
+.container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555555;
+}
+
+/* Input Fields */
+.container input[type="text"],
+.container input[type="email"],
+.container input[type="password"] {
+    width: 95%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input Focus Effect */
+.container input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+    outline: none;
+}
+
+/* Button Container */
+.container .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Adds spacing between buttons */
+    margin-top: 20px;
+}
+
+/* Submit Button */
+.container .btn-primary {
+    background-color: #4caf50;
+    color: white;
+    text-transform: uppercase;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    flex: 1; /* Ensure buttons are of equal width */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+/* Button Hover Effect */
+.container .btn-primary:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* Cancel Button */
+.container .btn-secondary {
+    background-color: #f44336;
+    color: white;
+    text-transform: uppercase;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    flex: 1; /* Ensure buttons are of equal width */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Cancel Button Hover Effect */
+.container .btn-secondary:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+/* Success Flash Message */
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 720px) {
+    .container {
+        width: 80%;
+        padding: 20px;
+    }
+
+    .container h2 {
+        font-size: 20px;
+    }
+
+    .container input[type="text"],
+    .container input[type="email"],
+    .container input[type="password"] {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    /* Adjust Buttons for Small Screens */
+    .container .button-group {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+
+}

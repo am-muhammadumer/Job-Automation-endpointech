@@ -10,14 +10,18 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 30px;
+    padding-top:10px;
+    padding-bottom:10px;
     width: 90%; /* Flexible width for responsiveness */
     max-width: 500px; /* Limit the maximum width */
     height: auto; /* Allow height to adjust based on content */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    text-align: center;
+    text-align: left;   /* Align text to the left */
     opacity: 0; /* Initially invisible */
     transition: opacity 0.8s ease, transform 0.8s ease; /* Smooth appearance */
     animation: slideDownOverDashboard 0.8s ease forwards; /* Sliding animation */
+    max-height: 80%; /* Prevent form from sliding too far down */
+    overflow-y: auto; /* Allow scrolling if the content overflows */
 }
 
 /* Show the form with animation */
@@ -41,15 +45,17 @@
     .container {
         width: 80%; /* Adjust width for smaller screens */
         padding: 20px;
-        top: 50px; /* Adjust vertical position */
+        top: 50%; /* Adjust vertical position to center vertically */
+        transform: translateX(-50%) /* Center the form vertically */
     }
 }
 
 @media (max-width: 480px) {
     .container {
-        width: 95%; /* Further adjust for very small screens */
+        width: 85%; /* Further adjust for very small screens */
         padding: 15px;
-        top: 30px;
+        top: 50%; /* Center form vertically */
+        transform: translateX(-50%) /* Center vertically */
     }
 }
 
@@ -67,6 +73,7 @@
     width: 50px;
     transition: background-color 0.3s ease;
 }
+
 .close-btn:hover {
     background-color: #e64c4c;
     color: white;
@@ -74,7 +81,7 @@
 
 /* Form Inputs and Button Styling */
 input[type="text"], input[type="email"], input[type="password"] {
-    width: 100%; /* Responsive input width */
+    width: 95%; /* Responsive input width */
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -95,6 +102,7 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 10px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -209,6 +217,7 @@ h1 {
         width: 100%; /* Keep items in a full-width layout on small screens */
     }
 }
+
 /* Positioning the Action Icons (Edit and Delete) */
 .dice-item {
     position: relative; /* Necessary for positioning icons inside the dice-item */
@@ -236,90 +245,104 @@ h1 {
 }
 
 
-/* Action Icons Container (Delete Icon) */
-.delete-icon {
-    position: absolute;
-    top: 10px; /* Move the delete icon to the bottom */
-    right: 20px;  /* Align it to the right */
-    color: #e64c4c; /* Red color for delete */
-    font-size: 18px;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
 
-.delete-icon:hover {
-    color: #b53939; /* Darker red on hover */
-    transform: scale(1.3); /* Slightly enlarge the icon */
-}
 
 
 /* General Styles for Flash Messages */
 .flash-message {
     padding: 15px;
     margin: 10px 0;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: opacity 0.3s ease;
+    border-radius: 8px;
     text-align: center;
+    font-size: 16px;
 }
 
-/* Success Flash Message */
 .flash-message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: #4caf50;
+    color: white;
 }
 
+.flash-message.error {
+    background-color: #f44336;
+    color: white;
+}
 
+.flash-message.info {
+    background-color: #2196f3;
+    color: white;
+}
 
+.flash-message.warning {
+    background-color: #ff9800;
+    color: white;
+}
 
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-
-/* Form Styling */
-form {
+th, td {
+    padding: 12px;
     text-align: left;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-input[type="text"], input[type="email"],
-input[type="password"] {
-    width: 96%;
-    padding: 10px;
-    margin-bottom: 15px;
     border: 1px solid #ddd;
-    border-radius: 5px;
     font-size: 14px;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
-}
-
-/* Submit Button */
-button {
-    width: 100%;
-    padding: 10px;
+th {
     background-color: #4caf50;
     color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
     font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+tr:hover {
+    background-color: #e2e2e2;
+}
+
+td #edit_Icon{
+    color: #007bff;
+    font-size: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-right: 10px;
+}
+td #edit_Icon:hover {
+    color: #0056b3;
+}
+td #del_Icon{
+    color: #f44336;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-button:hover {
-    background-color: #45a049;
+td #del_Icon:hover {
+    color: #d32f2f;
+}
+/* Responsive Table Adjustments */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
 }
 
+@media (max-width: 480px) {
+    table {
+        font-size: 10px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}

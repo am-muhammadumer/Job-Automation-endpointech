@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Dice Entry{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editDice.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Edit Dice Entry</h2>
+
+    <form action="/edit_dice/{{dice.id}}" method="post">
+        
+        <!-- Full Name -->
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input 
+                type="text" 
+                id="fullName" 
+                name="fullName" 
+                class="form-control" 
+                value="{{ dice.fullName }}" 
+                required>
+        </div>
+
+        <!-- Job Title -->
+        <div class="mb-3">
+            <label for="jobTitle" class="form-label">Job Title</label>
+            <input 
+                type="text" 
+                id="jobTitle" 
+                name="jobTitle" 
+                class="form-control" 
+                value="{{ dice.jobTitle }}" 
+                required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="diceEmail" class="form-label">Email</label>
+            <input 
+                type="email" 
+                id="diceEmail" 
+                name="diceEmail" 
+                class="form-control" 
+                value="{{ dice.diceEmail }}" 
+                required>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="form-control" 
+                value="{{ dice.password }}" 
+                required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{{ url_for('diceDashboard') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

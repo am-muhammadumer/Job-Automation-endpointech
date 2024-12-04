@@ -100,13 +100,15 @@ class ContactForm(db.Model):
     def __repr__(self):
         return f'<ContactForm {self.name}>'
 
-# Define the Dice model
 class Dice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullName = db.Column(db.String(100), nullable=False)
     jobTitle = db.Column(db.String(100), nullable=False)
     diceEmail = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Ensure nullable=False
+
+    user = db.relationship('User', backref='dice')
 
     def __repr__(self):
         return f'<Dice {self.fullName}>'
@@ -343,9 +345,11 @@ def payment():
 def bots():
     return render_template('bots.html')
 
-# Route for dice dashboard
 @app.route('/diceDashboard', methods=['GET', 'POST'])
+@login_required
 def diceDashboard():
+    dice_entries = Dice.query.filter_by(user_id=current_user.id).all()
+
     if request.method == 'POST':
         # Collect form data
         fullName = request.form.get('fullName')
@@ -353,18 +357,47 @@ def diceDashboard():
         diceEmail = request.form.get('diceEmail')
         password = request.form.get('password')
 
-        # Add a new dice entry to the database
-        new_dice = Dice(fullName=fullName, jobTitle=jobTitle, diceEmail=diceEmail, password=password)
+        # Add a new dice entry to the database with the current user's ID
+        new_dice = Dice(
+            fullName=fullName,
+            jobTitle=jobTitle,
+            diceEmail=diceEmail,
+            password=password,
+            user_id=current_user.id  # Set the foreign key to the logged-in user's ID
+        )
         db.session.add(new_dice)
         db.session.commit()
 
-        # Redirect to avoid form re-submission on refresh
-        flash('Dice entry added successfully!', 'success')
         return redirect(url_for('diceDashboard'))
 
-    # Fetch all dice entries for display
-    dice_entries = Dice.query.all()
     return render_template('diceDashboard.html', dice_entries=dice_entries)
+
+
+@app.route('/edit_dice/<int:dice_id>', methods=['GET', 'POST'])
+@login_required
+def edit_dice(dice_id):
+    # Fetch the dice entry by ID
+    dice = Dice.query.get_or_404(dice_id)
+
+    # Ensure that the dice entry belongs to the logged-in user
+    if dice.user_id != current_user.id:
+        flash('You are not authorized to edit this entry.', 'error')
+        return redirect(url_for('diceDashboard'))
+
+    if request.method == 'POST':
+        # Get updated data from the form
+        dice.fullName = request.form.get('fullName')
+        dice.jobTitle = request.form.get('jobTitle')
+        dice.diceEmail = request.form.get('diceEmail')
+        dice.password = request.form.get('password')
+
+        # Commit the changes to the database
+        db.session.commit()
+        return redirect(url_for('diceDashboard'))
+
+    # Render the edit form with existing dice data
+    return render_template('editDice.html', dice=dice)
+
 
 
 @app.route('/delete_dice/<int:dice_id>', methods=['GET', 'POST'])
@@ -374,6 +407,7 @@ def delete_dice(dice_id):
     db.session.commit()
     flash('Dice entry deleted successfully!', 'success')
     return redirect(url_for('diceDashboard'))
+
 
 
 # Initialize the database and create tables if they don't exist

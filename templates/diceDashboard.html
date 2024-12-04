@@ -11,16 +11,6 @@ Dice Dashboard -AutoJobs
 
 {% block content %}
 <div class="outer-container">
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div>
-            {% for category, message in messages %}
-                <p class="flash-message {{ category }}">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% endwith %}
 
     <div class="container" id="add-dice-profile">
         <h1 id="formHeading">Add New Dice</h1>
@@ -48,30 +38,51 @@ Dice Dashboard -AutoJobs
     </div>
 </div>
 
-
 <div class="dashboard">
     <h1>Dice Dashboard</h1>
 
-    <!-- Display all dice entries -->
-    <div class="applied-dice">
-        {% for dice in dice_entries %}
-            <div class="dice-item">
-                    <!-- Delete Icon -->
-                    <a href="{{ url_for('delete_dice', dice_id=dice.id) }}" class="delete-icon" title="Delete Entry">
-                        <i class="fas fa-trash-alt"></i> <!-- Font Awesome Trash Icon -->
-                </a>
-                <p><strong>{{ dice.fullName }}</strong> - {{ dice.jobTitle }}</p>
-                <p>Email: {{ dice.diceEmail }}</p>
-                <p>Password: {{ dice.password }}</p>
-            </div>
-        {% else %}
-            <p>No entries found.</p>
-        {% endfor %}
+    <!-- Table for Dice Entries -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Job Title</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dice in dice_entries %}
+                    <tr>
+                        <td>{{ dice.fullName }}</td>
+                        <td>{{ dice.jobTitle }}</td>
+                        <td>{{ dice.diceEmail }}</td>
+                        <td>{{ dice.password }}</td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a id="edit_Icon" href="{{ url_for('edit_dice', dice_id=dice.id) }}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <!-- Delete Icon -->
+                            <a id="del_Icon" href="{{ url_for('delete_dice', dice_id=dice.id) }}" class="btn btn-danger" title="Delete Entry">
+                                <i class="fas fa-trash-alt"></i> <!-- Font Awesome Trash Icon -->
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">No entries found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <!-- Toggle Button -->
     <a onclick="toggleForm()" class="toggle-form-btn" id="toggle-form-btn">Add New Dice</a>
 </div>
+
 <script src="{{ url_for('static', filename='js/diceDashboard.js') }}"></script>
 {% endblock %}
-
