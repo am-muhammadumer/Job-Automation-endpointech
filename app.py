@@ -106,6 +106,7 @@ class Dice(db.Model):
     jobTitle = db.Column(db.String(100), nullable=False)
     diceEmail = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    dice_status = db.Column(db.String(50), default="stopped")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Ensure nullable=False
 
     user = db.relationship('User', backref='dice')
@@ -405,9 +406,37 @@ def delete_dice(dice_id):
     dice = Dice.query.get_or_404(dice_id)
     db.session.delete(dice)
     db.session.commit()
-    flash('Dice entry deleted successfully!', 'success')
     return redirect(url_for('diceDashboard'))
 
+@app.route('/toggle_dice_status', methods=['POST'])
+def toggle_dice_status():
+    # Get the action from the request
+    try:
+        data = request.get_json()
+        action = data.get('action')
+        
+        if action not in ['start', 'stop']:
+            return jsonify({'success': False, 'message': 'Invalid action'})
+        
+        # Assuming you want to toggle a specific dice, get the dice instance
+        dice = Dice.query.first()  # For example, get the first dice from the database
+        
+        if not dice:
+            return jsonify({'success': False, 'message': 'Dice not found'})
+
+        # Update dice status based on action
+        if action == 'start':
+            dice.dice_status = 'running'  # Set the dice to 'running'
+        elif action == 'stop':
+            dice.dice_status = 'stopped'  # Set the dice to 'stopped'
+        
+        # Commit the changes to the database
+        db.session.commit()
+
+        return jsonify({'success': True})
+    
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
 
 
 # Initialize the database and create tables if they don't exist
