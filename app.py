@@ -14,7 +14,7 @@ app = Flask(__name__)
 # Configuration settings
 app.config['UPLOAD_FOLDER'] = 'uploads/cvs'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'doc'}
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs3.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
 # Secret key for sessions
@@ -408,43 +408,52 @@ def delete_dice(dice_id):
     db.session.commit()
     return redirect(url_for('diceDashboard'))
 
-@app.route('/toggle_dice_status', methods=['POST'])
-def toggle_dice_status():
-    # Get the action from the request
+@app.route('/change_dice_status/<int:dice_id>', methods=['POST'])
+@login_required  # Ensure the user is logged in
+def change_dice_status(dice_id):
+    print("hello")
     try:
+        # Get the request body
         data = request.get_json()
-        action = data.get('action')
-        
-        if action not in ['start', 'stop']:
-            return jsonify({'success': False, 'message': 'Invalid action'})
-        
-        # Assuming you want to toggle a specific dice, get the dice instance
-        dice = Dice.query.first()  # For example, get the first dice from the database
-        
-        if not dice:
-            return jsonify({'success': False, 'message': 'Dice not found'})
+        new_status = data.get('new_status')
+        print(new_status)
 
-        # Update dice status based on action
-        if action == 'start':
-            dice.dice_status = 'running'  # Set the dice to 'running'
-        elif action == 'stop':
-            dice.dice_status = 'stopped'  # Set the dice to 'stopped'
-        
-        # Commit the changes to the database
+        # Validate the new status
+        if new_status not in ['running', 'stopped']:
+            return jsonify({'success': False, 'message': 'Invalid status value'}), 400
+
+        # Fetch the dice profile for the given dice_id
+        dice_profile = Dice.query.get_or_404(dice_id)
+
+        # Verify if the current user owns the dice
+        if dice_profile.user_id != current_user.id:
+            return jsonify({'success': False, 'message': 'Unauthorized access'}), 403
+
+        # Update the dice status
+        dice_profile.dice_status = new_status
         db.session.commit()
 
-        return jsonify({'success': True})
-    
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)})
+        return jsonify({'success': True, 'new_status': dice_profile.dice_status})
 
+    except Exception as e:
+        # Handle unexpected errors
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+# getting dice profile status 
+@app.route('/get_dice_status/<int:dice_id>', methods=['GET'])
+def get_dice_status(dice_id):
+    dice_profile = Dice.query.get(dice_id)
+    if dice_profile and dice_profile.user_id == current_user.id:
+        return jsonify({'success': True, 'status': dice_profile.dice_status})
+    
+    return jsonify({'success': False, 'message': 'Dice not found or unauthorized'})
 
 # Initialize the database and create tables if they don't exist
 with app.app_context():
-    db.drop_all()  # Be cautious with this in production environments
     db.create_all()  # Recreate all tables
 
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

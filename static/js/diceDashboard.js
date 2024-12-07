@@ -20,30 +20,41 @@ document.getElementById("toggleButton").addEventListener("click", function () {
     }
 });
 
-document.getElementById('toggleButton').addEventListener('click', function(event) {
-    event.preventDefault();  // Prevent default anchor behavior
-    
-    var isPlay = document.getElementById('play').style.display !== 'none'; // Check if Play is visible
-    console.log("Play button clicked. Is Play visible?", isPlay); // Debugging line
 
-    // Send a POST request to toggle the dice status
-    fetch('/toggle_dice_status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ action: isPlay ? 'start' : 'stop' })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Response from server:", data); // Check server response
-        if (data.success) {
-            // Toggle the button icon visibility
-            document.getElementById('play').style.display = isPlay ? 'none' : 'inline';
-            document.getElementById('pause').style.display = isPlay ? 'inline' : 'none';
-        } else {
-            console.error('Error:', data.message);  // Log any error from the server
+document.querySelectorAll('.toggleButton').forEach(button => {
+    button.addEventListener('click', async function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+
+        const diceId = button.getAttribute('dice-id');
+        
+        // Find play/pause icons within the clicked button's scope
+        const playIcon = button.querySelector('.play-icon');
+        const pauseIcon = button.querySelector('.pause-icon');
+        const isPlay = playIcon.style.display !== 'none'; // Check current state
+
+        try {
+            // Send the API request to toggle dice status
+            const response = await fetch(`/change_dice_status/${diceId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ new_status: isPlay ? 'running' : 'stopped' })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Toggle button icons
+                playIcon.style.display = isPlay ? 'none' : 'inline';
+                pauseIcon.style.display = isPlay ? 'inline' : 'none';
+            } else {
+                console.error('Server Error:', data.message || 'Failed to toggle dice status');
+                alert('Error: ' + (data.message || 'An unexpected error occurred.'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while toggling the dice status. Please try again.');
         }
-    })
-    .catch(error => console.error('Error:', error));
+    });
 });

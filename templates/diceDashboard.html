@@ -62,25 +62,32 @@ Dice Dashboard -AutoJobs
                     <td>{{ dice.password }}</td>
                     <td>
                         <div class="icon_div">
-                           
-                                <!-- Edit Button -->
-                                <a id="edit_Icon" href="{{ url_for('edit_dice', dice_id=dice.id) }}" class="btn btn-warning">
-                                    <i class="fas fa-edit" title="Edit"></i>
-                                </a>
-                                <!-- Delete Button -->
-                                <a id="del_Icon" href="{{ url_for('delete_dice', dice_id=dice.id) }}" class="btn btn-danger" title="Delete Entry">
-                                    <i class="fas fa-trash-alt" title="Delete"></i>
-                                </a>
-                               <!-- Play/Pause Button -->
-                                <a href="#" id="toggleButton" class="btn btn-primary">
-                                    <i id="play" class="fa fa-play" aria-hidden="true" title="Play Dice"></i>
-                                    <i id="pause" class="fa fa-pause" aria-hidden="true" title="Pause Dice" style="display: none;"></i>
-                                </a>
-                                <!-- View Button -->
-                                <a href="#" class="btn btn-light">
-                                    <i id="view" class="fa fa-eye" aria-hidden="true" title="View Logs"></i>
-                                </a>
-                            
+
+                            <!-- Edit Button -->
+                            <a id="edit_Icon" href="{{ url_for('edit_dice', dice_id=dice.id) }}"
+                                class="btn btn-warning">
+                                <i class="fas fa-edit" title="Edit"></i>
+                            </a>
+                            <!-- Delete Button -->
+                            <a id="del_Icon" href="{{ url_for('delete_dice', dice_id=dice.id) }}" class="btn btn-danger"
+                                title="Delete Entry">
+                                <i class="fas fa-trash-alt" title="Delete"></i>
+                            </a>
+                            <!-- Play/Pause Button -->
+                            <a href="#" id="toggleButton" class="btn btn-primary" dice-id="{{ dice.id }}">
+                                {% if dice.dice_status == "stopped" %}
+                                <i id="play" class="fa fa-play" aria-hidden="true" title="Play Dice"></i>
+                                <i id="pause" class="fa fa-pause" aria-hidden="true" title="Pause Dice" style="display: none;"></i>
+                                {% else %}
+                                <i id="play" class="fa fa-play" aria-hidden="true" title="Play Dice" style="display: none;"></i>
+                                <i id="pause" class="fa fa-pause" aria-hidden="true" title="Pause Dice"></i>
+                                {% endif %}
+                            </a>
+                            <!-- View Button -->
+                            <a href="#" class="btn btn-light">
+                                <i id="view" class="fa fa-eye" aria-hidden="true" title="View Logs"></i>
+                            </a>
+
                         </div>
                     </td>
                 </tr>
