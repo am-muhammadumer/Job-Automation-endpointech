@@ -7,45 +7,29 @@ function closeForm() {
     document.getElementById('add-dice-profile').classList.remove('show');
 }
 
-document.getElementById("toggleButton").addEventListener("click", function () {
-    const playIcon = document.getElementById("play");
-    const pauseIcon = document.getElementById("pause");
-
-    if (playIcon.style.display === "none") {
-        playIcon.style.display = "inline";
-        pauseIcon.style.display = "none";
-    } else {
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "inline";
-    }
-});
-
-
 document.querySelectorAll('.toggleButton').forEach(button => {
-    button.addEventListener('click', async function(event) {
-        event.preventDefault(); // Prevent default anchor behavior
+    button.addEventListener('click', async function (event) {
+        event.preventDefault(); // Default behavior ko rokiye
 
         const diceId = button.getAttribute('dice-id');
-        
-        // Find play/pause icons within the clicked button's scope
-        const playIcon = button.querySelector('.play-icon');
-        const pauseIcon = button.querySelector('.pause-icon');
-        const isPlay = playIcon.style.display !== 'none'; // Check current state
+        const playIcon = button.querySelector('.fa-play'); // Play icon select karen
+        const pauseIcon = button.querySelector('.fa-pause'); // Pause icon select karen
+        const isPlay = playIcon.style.display !== 'none'; // Check karein ki play icon visible hai ya nahi
 
         try {
-            // Send the API request to toggle dice status
+            // Backend ko request bhejiye
             const response = await fetch(`/change_dice_status/${diceId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ new_status: isPlay ? 'running' : 'stopped' })
+                body: JSON.stringify({ new_status: isPlay ? 'running' : 'stopped' }),
             });
 
             const data = await response.json();
 
             if (data.success) {
-                // Toggle button icons
+                // Icons ko toggle karein
                 playIcon.style.display = isPlay ? 'none' : 'inline';
                 pauseIcon.style.display = isPlay ? 'inline' : 'none';
             } else {

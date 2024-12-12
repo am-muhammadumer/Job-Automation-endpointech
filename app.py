@@ -14,7 +14,7 @@ app = Flask(__name__)
 # Configuration settings
 app.config['UPLOAD_FOLDER'] = 'uploads/cvs'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'doc'}
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs3.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
 # Secret key for sessions
@@ -456,4 +456,4 @@ with app.app_context():
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(debug=True)
