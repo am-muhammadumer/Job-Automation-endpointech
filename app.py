@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Configuration settings
 app.config['UPLOAD_FOLDER'] = 'uploads/cvs'
-app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'doc'}
+app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'doc', 'yaml'}
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
@@ -100,6 +100,9 @@ class ContactForm(db.Model):
     def __repr__(self):
         return f'<ContactForm {self.name}>'
 
+
+    
+
 class Dice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullName = db.Column(db.String(100), nullable=False)
@@ -130,7 +133,23 @@ class Payment(db.Model):
     def __repr__(self):
         return f"<Payment {self.id} - Plan: {self.plan}, User ID: {self.id}>"
 
+class Linkedin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fullName = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    cv = db.Column(db.String(200), nullable=False)
+    resume = db.Column(db.String(200), nullable=False)
+    yaml_file = db.Column(db.String(200), nullable=False)
+    
+    # Add the user_id foreign key column
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    # Define the relationship to the User model
+    user = db.relationship('User', backref='linkedin_profiles')
 
+    def __repr__(self):
+        return f'<Linkedin {self.fullName}>'
 
 # Load user for Flask-Login
 @login_manager.user_loader
@@ -449,9 +468,127 @@ def get_dice_status(dice_id):
     
     return jsonify({'success': False, 'message': 'Dice not found or unauthorized'})
 
-# Initialize the database and create tables if they don't exist
+
+from flask_login import current_user
+
+@app.route('/linkedinDashboard', methods=['GET', 'POST'])
+def linkedinDashboard():
+    if request.method == 'POST':
+        # Extract data from the form
+        full_name = request.form['fullName']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Handle file uploads (cv, resume, yaml_file)
+        cv = request.files.get('cv')
+        resume = request.files.get('resume')
+        yaml_file = request.files.get('yamlFile')
+
+        # Validate file uploads
+        if not cv or not resume or not yaml_file:
+            flash('All files must be uploaded.', 'error')
+            return redirect(request.url)
+
+        if not allowed_file(cv.filename) or not allowed_file(resume.filename) or not allowed_file(yaml_file.filename):
+            flash('Invalid file type. Allowed file types are: PDF, DOCX, YAML.', 'error')
+            return redirect(request.url)
+
+        # Secure the filenames and save them to the designated folder
+        cv_filename = secure_filename(cv.filename)
+        resume_filename = secure_filename(resume.filename)
+        yaml_filename = secure_filename(yaml_file.filename)
+
+        # Save the files
+        cv.save(os.path.join(app.config['UPLOAD_FOLDER'], cv_filename))
+        resume.save(os.path.join(app.config['UPLOAD_FOLDER'], resume_filename))
+        yaml_file.save(os.path.join(app.config['UPLOAD_FOLDER'], yaml_filename))
+
+        # Create a new Linkedin entry and store it in the database
+        new_linkedin = Linkedin(
+            fullName=full_name,
+            email=email,
+            password=password,
+            cv=cv_filename,
+            resume=resume_filename,
+            yaml_file=yaml_filename,
+            user_id=current_user.id  # Set the user_id to the current user's ID
+        )
+
+        db.session.add(new_linkedin)
+        db.session.commit()
+
+        # Redirect to the dashboard (or wherever you want)
+        return redirect(url_for('linkedinDashboard'))
+
+    # For GET request, display the dashboard
+    linkedin_entries = Linkedin.query.all()  # Retrieve all linkedin entries from the database
+    return render_template('linkedinDashboard.html', linkedin_entries=linkedin_entries)
+
+
+
+# Route for editing a LinkedIn entry
+@app.route('/edit_linkedin/<int:linkedin_id>', methods=['GET', 'POST'])
+def edit_linkedin(linkedin_id):
+    # Find the LinkedIn entry by its ID
+    linkedin_entry = Linkedin.query.get_or_404(linkedin_id)
+    
+    # Handle the POST request to update the entry
+    if request.method == 'POST':
+        linkedin_entry.fullName = request.form['fullName']
+        linkedin_entry.email = request.form['email']
+        linkedin_entry.password = request.form['password']
+        
+        # Handle file uploads (CV, Resume, YAML File)
+        if 'cv' in request.files:
+            cv_file = request.files['cv']
+            if cv_file:
+                linkedin_entry.cv = cv_file.read()  # Save file content or path as needed
+
+        if 'resume' in request.files:
+            resume_file = request.files['resume']
+            if resume_file:
+                linkedin_entry.resume = resume_file.read()  # Save file content or path as needed
+
+        if 'yamlFile' in request.files:
+            yaml_file = request.files['yamlFile']
+            if yaml_file:
+                linkedin_entry.yaml_file = yaml_file.read()  # Save file content or path as needed
+        
+        # Commit the updated entry to the database
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of error
+            flash(f'Error updating LinkedIn entry: {str(e)}', 'danger')
+        
+        # Redirect after successful update
+        return redirect(url_for('linkedinDashboard'))
+
+    # Handle the GET request to display the form with current data
+    return render_template('edit_linkedin.html', linkedin=linkedin_entry)
+
+# Route to delete a LinkedIn entry
+@app.route('/delete_linkedin/<int:linkedin_id>', methods=['GET', 'POST'])
+def delete_linkedin(linkedin_id):
+    # Find the LinkedIn entry by its ID
+    linkedin_entry = Linkedin.query.get_or_404(linkedin_id)
+    
+    # Delete the entry from the database
+    try:
+        db.session.delete(linkedin_entry)
+        db.session.commit()
+        flash('LinkedIn entry deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()  # Rollback if something goes wrong
+        flash(f'Error deleting LinkedIn entry: {str(e)}', 'danger')
+    
+    # Redirect to a dashboard or another page after deletion
+    return redirect(url_for('linkedinDashboard'))
+
+
+
 with app.app_context():
-    db.create_all()  # Recreate all tables
+    db.create_all()  
 
 
 # Run the app

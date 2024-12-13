@@ -1,0 +1,446 @@
+/* Form Container - Adjusted for Sliding Over Dashboard */
+.container {
+    display: none; /* Form is hidden by default */
+    position: fixed; /* Fixed positioning to stay on top of the page */
+    top: -100%; /* Initially positioned above the screen */
+    left: 30%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 999; /* Ensure it appears above the dashboard */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 90%; /* Flexible width for responsiveness */
+    max-width: 500px; /* Limit the maximum width */
+    height: auto; /* Allow height to adjust based on content */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-align: left;   /* Align text to the left */
+    opacity: 0; /* Initially invisible */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* Smooth appearance */
+    animation: slideDownOverDashboard 0.8s ease forwards; /* Sliding animation */
+    max-height: 80%; /* Prevent form from sliding too far down */
+    overflow-y: auto; /* Allow scrolling if the content overflows */
+}
+
+/* When 'show' class is added, display the form */
+.container.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0); /* You can also use a sliding effect */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Keyframes for sliding down over the dashboard */
+@keyframes slideDownOverDashboard {
+    0% {
+        top: -100%; /* Start above the screen */
+    }
+    100% {
+        top: 100px; /* Final position */
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 80%; /* Adjust width for smaller screens */
+        padding: 20px;
+        top: 50%; /* Adjust vertical position to center vertically */
+        transform: translateX(-50%); /* Center the form vertically */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 85%; /* Further adjust for very small screens */
+        padding: 15px;
+        top: 50%; /* Center form vertically */
+        transform: translateX(-50%); /* Center vertically */
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 30px; /* Proper alignment */
+    right: 30px; /* Adjust right position */
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: #e64c4c;
+    color: white;
+}
+
+/* Form Inputs and Button Styling */
+input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+    width: 95%; /* Responsive input width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+button {
+    width: 100%; /* Responsive button */
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Dashboard Styles */
+.dashboard {
+    width: 90%;
+    /* max-width: 800px; */
+    margin: 20px auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Allow absolute positioning inside this container */
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+}
+
+/* Applied Dice Container */
+.applied-dice {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for the container */
+    display: block; /* Ensure it is a block element */
+}
+
+/* Dice Item (Each Entry) */
+.applied-dice .dice-item {
+    background: #4caf50;
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 16px; /* Maintain readable font size */
+    font-weight: 600; /* Bold for emphasis */
+    width: 100%; /* Each entry takes the full width */
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease; /* Smooth hover effects */
+    margin-bottom: 15px; /* Space between entries */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Light shadow for depth */
+}
+
+/* Hover effect on dice items */
+.applied-dice .dice-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    background: #3e8e41; /* Darker green on hover */
+}
+
+/* Add Dice Button */
+.toggle-form-btn {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for the button */
+}
+
+/* Button Hover Effect */
+.toggle-form-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px); /* Button lift effect on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .toggle-form-btn {
+        top: 15px;
+        right: 10px;
+        font-size: 14px;
+        padding: 10px 18px; /* Slightly smaller padding */
+    }
+
+    .applied-dice .dice-item {
+        width: 100%; /* Keep the items full width on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .toggle-form-btn {
+        top: 10px;
+        right: 5px;
+        font-size: 12px;
+        padding: 8px 16px; /* Compact button */
+    }
+
+    .applied-dice .dice-item {
+        width: 100%; /* Keep items in a full-width layout on small screens */
+    }
+}
+
+/* Positioning the Action Icons (Edit and Delete) */
+.dice-item {
+    position: relative; /* Necessary for positioning icons inside the dice-item */
+    background: #4caf50;
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Action Icons Container */
+.action-icons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px; /* Space between edit and delete icons */
+}
+
+/* General Styles for Flash Messages */
+.flash-message {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.flash-message.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.flash-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.flash-message.info {
+    background-color: #2196f3;
+    color: white;
+}
+
+.flash-message.warning {
+    background-color: #ff9800;
+    color: white;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+th {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e2e2e2;
+}
+
+/* General Styling for Buttons */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 8px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Button Colors */
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #bd2130;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn-light {
+    background-color: #232324;
+    color: #fff;
+}
+
+.btn-light:hover {
+    background-color: #3c3c3c;
+    transform: translateY(-2px);
+}
+
+/* Icon Styling */
+.btn i {
+    font-size: 20px;
+    margin: 0 4px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.btn i:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+/* Responsive Flexbox Adjustments for Buttons */
+.icon_div {
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Adjust spacing between buttons */
+}
+
+.icon_div .btn {
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .btn {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .btn i {
+        font-size: 18px;
+    }
+
+    .icon_div {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        padding: 5px 8px;
+        font-size: 12px;
+        width: 100%; /* Make buttons full-width on very small screens */
+    }
+
+    .btn i {
+        font-size: 16px;
+    }
+
+    .icon_div {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+}
+
+/* Table Responsiveness */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 10px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+}
+
+/* Pause Button Styling */
+#pause {
+    padding-left: 4px;
+    padding-right: 3px;
+    font-size: 20px;
+}
