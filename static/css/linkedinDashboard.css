@@ -31,7 +31,11 @@
     transform: translateY(0); /* You can also use a sliding effect */
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
-
+.page-wrapped {
+    display: flex;
+    flex-direction: column;
+    min-height: 74vh; /* Full viewport height */
+}
 /* Keyframes for sliding down over the dashboard */
 @keyframes slideDownOverDashboard {
     0% {

@@ -12,15 +12,17 @@ Linkedin Dashboard - AutoJobs
 {% block content %}
 <div class="outer-container">
 
+    <!-- Form Container -->
     <div class="container" id="add-linkedin-profile">
         <h1 id="formHeading">Add Linkedin Bot</h1>
 
-        <!-- Professional Close Button using Font Awesome -->
+        <!-- Close Button -->
         <button class="close-btn" onclick="closeForm()">
-            <i class="fas fa-times"></i> <!-- Font Awesome 'X' icon -->
+            <i class="fas fa-times"></i>
         </button>
 
-        <form method="POST" action="{{ url_for('linkedinDashboard') }}" id="linkedin-form" enctype="multipart/form-data">
+        <form method="POST" action="{{ url_for('linkedinDashboard') }}" id="linkedin-form"
+            enctype="multipart/form-data">
             <label for="fullName">Full Name:</label>
             <input type="text" id="fullName" name="fullName" required>
 
@@ -30,88 +32,98 @@ Linkedin Dashboard - AutoJobs
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <label for="cv">Cv:</label>
-            <input type="file" id="cv" name="cv" required>
+            <label for="cv">Cover Letter:</label>
+            <input type="file" id="cv" name="cv" title="Only PDF file format accepted" required>
 
             <label for="resume">Resume:</label>
-            <input type="file" id="resume" name="resume" required>
+            <input type="file" id="resume" name="resume" title="Only PDF file format accepted" required>
 
-            <label for="yamlFile">Yaml File:</label>
-            <input type="file" id="yamlFile" name="yamlFile" required>
+            <label for="yamlFile">YAML File:</label>
+            <input type="file" id="yamlFile" name="yamlFile" title="Please upload YAML file format" required>
 
             <button type="submit" id="submit-btn">Submit</button>
         </form>
     </div>
 </div>
 
-<div class="dashboard">
-    <h1>Linkedin Dashboard</h1>
+<div class="page-wrapped">
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <h1>Linkedin Dashboard</h1>
 
-    <!-- Table for LinkedIn Entries -->
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Password</th>
-                    <th>Cv</th>
-                    <th>Resume</th>
-                    <th>Yaml File</th>
-                    <th>Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for linkedin in linkedin_entries %}
-                <tr>
-                    <td>{{ linkedin.fullName }}</td>
-                    <td>{{ linkedin.email }}</td>
-                    <td>{{ linkedin.password }}</td>
-                    <td>{{ linkedin.cv }}</td>
-                    <td>{{ linkedin.resume }}</td>
-                    <td>{{ linkedin.yamlFile }}</td>
-                    <td>
-                        <div class="icon_div">
-            
-                            <!-- Edit Button -->
-                            <a id="edit_Icon" href="{{ url_for('edit_linkedin', linkedin_id=linkedin.id) }}" class="btn btn-warning">
-                                <i class="fas fa-edit" title="Edit"></i>
-                            </a>
-                            <!-- Delete Button -->
-                            <a id="del_Icon" href="{{ url_for('delete_linkedin', linkedin_id=linkedin.id) }}" class="btn btn-danger" title="Delete Entry">
-                                <i class="fas fa-trash-alt" title="Delete"></i>
-                            </a>
-                            <!-- Play and Pause -->
-                            <a href="#" class="btn btn-primary toggleButton" linkedin-id="{{ linkedin.id }}">
-                                {% if linkedin.dice_status == "stopped" %}
+        <!-- Table for LinkedIn Entries -->
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Cover Letter</th>
+                        <th>Resume</th>
+                        <th>YAML File</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linkedin in linkedin_entries %}
+                    <tr>
+                        <td>{{ linkedin.fullName }}</td>
+                        <td>{{ linkedin.email }}</td>
+                        <td>{{ linkedin.password }}</td>
+                        <td>{{ linkedin.cv }}</td>
+                        <td>{{ linkedin.resume }}</td>
+                        <td>{{ linkedin.yaml_file }}</td>
+                        <td>
+                            <div class="icon_div">
+                                <!-- Edit Button -->
+                                <a href="{{ url_for('edit_linkedin', linkedin_id=linkedin.id) }}"
+                                    class="btn btn-warning">
+                                    <i class="fas fa-edit" title="Edit"></i>
+                                </a>
+
+                                <!-- Delete Button -->
+                                <a href="{{ url_for('delete_linkedin', linkedin_id=linkedin.id) }}"
+                                    class="btn btn-danger">
+                                    <i class="fas fa-trash-alt" title="Delete"></i>
+                                </a>
+
+                                <!-- Play/Pause Button -->
+                                <a href="#" class="btn btn-primary toggleButton" linkedin-id="{{ linkedin.id }}">
+                                    {% if linkedin.linkedin_status == "stopped" %}
                                     <i class="fa fa-play play-icon" aria-hidden="true" title="Play Bot"></i>
-                                    <i class="fa fa-pause pause-icon" aria-hidden="true" title="Pause Bot" style="display: none;"></i>
-                                {% else %}
-                                    <i class="fa fa-play play-icon" aria-hidden="true" title="Play Bot" style="display: none;"></i>
+                                    <i class="fa fa-pause pause-icon" aria-hidden="true" title="Pause Bot"
+                                        style="display: none;"></i>
+                                    {% else %}
+                                    <i class="fa fa-play play-icon" aria-hidden="true" title="Play Bot"
+                                        style="display: none;"></i>
                                     <i class="fa fa-pause pause-icon" aria-hidden="true" title="Pause Bot"></i>
-                                {% endif %}
-                            </a>                            
-                            <!-- View Button -->
-                            <a href="#" class="btn btn-light">
-                                <i id="view" class="fa fa-eye" aria-hidden="true" title="View Logs"></i>
-                            </a>
-            
-                        </div>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="7">No entries found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>            
-        </table>
+                                    {% endif %}
+                                </a>
+                                <!-- View Logs Button -->
+                                <a href="#" class="btn btn-light">
+                                    <i class="fa fa-eye" title="View Logs"></i>
+                                </a>
+                                <!-- Download YAML File -->
+                                <a href="{{ url_for('download_yaml', linkedin_id=linkedin.id) }}" class="btn btn-info">
+                                    <i class="fa fa-download" title="Download YAML"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7">No entries found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Button -->
+        <a onclick="toggleForm()" class="toggle-form-btn" id="toggle-form-btn">Add Linkedin Bot</a>
     </div>
 
-    <!-- Toggle Button -->
-    <a onclick="toggleForm()" class="toggle-form-btn" id="toggle-form-btn">Add Linkedin Bot</a>
-
 </div>
-
 <script src="{{ url_for('static', filename='js/linkedinDashboard.js') }}"></script>
 {% endblock %}

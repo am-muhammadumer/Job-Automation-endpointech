@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,72 +14,79 @@
     {% block head %}
     {% endblock %}
 </head>
-<body>
-    <div class="top_section">
-        <div class="navbar">
-            <div class="logo">
-                <a href="/">
-                    <img src="{{ url_for('static', filename='img/logo_img.png') }}" alt="AutoJobs">
-                </a>
-            </div>
-            <div class="nav_links">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/features">Features</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/pricing">Pricing</a></li>
-                    <li><a href="/bots">Bots</a></li>
-                </ul>
-            </div>
-            <div class="burgerMenu">
-                <i class="fa fa-bars"></i>
-            </div>
-            <div class="nav_btns">
-                <li><a id="getStartedBtn" href="/pricing">Get Started</a></li>
-                {% if current_user.is_authenticated %}
-                <!-- Show Logout if the user is logged in -->
-                <li class="profileMenu">
-                    <a id="profileBtn" href="#">
-                        <i class="fa fa-solid fa-user"></i>
-                    </a>
-                    <div class="dropdown" id="profileDropdown">
-                        <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a> <!-- Corrected icon -->
-                        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> <!-- Corrected icon -->
-                    </div>
-                </li>
-                {% else %}
-                <!-- Show Login if the user is not logged in -->
-                <li><a id="loginBtn" href="/login">Login</a></li>
-                {% endif %}
-            </div>
-            
 
-             <!-- Burger Menu Dropdown -->
-            <div class="burgerMenuDropdown">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/features">Features</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/pricing">Pricing</a></li>
-                    <li><a href="/bots">Bots</a></li>
-                </ul>
+<body>
+
+    <div class="main-container">
+        <div class="top_section">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="/">
+                        <img src="{{ url_for('static', filename='img/logo_img.png') }}" alt="AutoJobs">
+                    </a>
+                </div>
+                <div class="nav_links">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/bots">Bots</a></li>
+                    </ul>
+                </div>
+                <div class="burgerMenu">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <div class="nav_btns">
+                    <li><a id="getStartedBtn" href="/pricing">Get Started</a></li>
+                    {% if current_user.is_authenticated %}
+                    <!-- Show Logout if the user is logged in -->
+                    <li class="profileMenu">
+                        <a id="profileBtn" href="#">
+                            <i class="fa fa-solid fa-user"></i>
+                        </a>
+                        <div class="dropdown" id="profileDropdown">
+                            <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <!-- Corrected icon -->
+                            <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> <!-- Corrected icon -->
+                        </div>
+                    </li>
+                    {% else %}
+                    <!-- Show Login if the user is not logged in -->
+                    <li><a id="loginBtn" href="/login">Login</a></li>
+                    {% endif %}
+                </div>
+
+
+                <!-- Burger Menu Dropdown -->
+                <div class="burgerMenuDropdown">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/pricing">Pricing</a></li>
+                        <li><a href="/bots">Bots</a></li>
+                    </ul>
+                </div>
+
             </div>
-            
+        </div>
+        <div id="main-content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <div class="footer">
+            <p>@All rights reserved 2024 | AutoJobs</p>
+            <button id="backToTopBtn">
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
 
-    {% block content %}
-    {% endblock %}
-
-    <div class="footer">
-        <p>@All rights reserved 2024 | AutoJobs</p>  
-        <button id="backToTopBtn">
-            <i class="fa fa-arrow-up" aria-hidden="true"></i>
-        </button>          
-    </div>
-
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>    
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
+
 </html>

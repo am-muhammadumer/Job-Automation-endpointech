@@ -14,11 +14,11 @@ app = Flask(__name__)
 # Configuration settings
 app.config['UPLOAD_FOLDER'] = 'uploads/cvs'
 app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'docx', 'doc', 'yaml'}
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AutoJobs2.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 
 # Secret key for sessions
-app.config['SECRET_KEY'] = 'your_secret_key_here'
+app.config['SECRET_KEY'] = 'your_secret_key_here'   
 
 # Initialize the database
 db = SQLAlchemy(app)
@@ -30,18 +30,29 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'  # Redirect here if user is not logged in
 
-# Function to check if the file extension is allowed
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+    # Allowed file extensions
+    allowed_extensions = {'pdf', 'docx', 'yaml'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-# Define the upload folder
-UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# # Define the upload folder
+# UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Ensure that the upload folder exists
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+# # Ensure that the upload folder exists
+# if not os.path.exists(UPLOAD_FOLDER):
+#     os.makedirs(UPLOAD_FOLDER)
+
+# Folder paths for file uploads
+app.config['UPLOAD_FOLDER_CV'] = 'uploads/cv'
+app.config['UPLOAD_FOLDER_RESUME'] = 'uploads/resume'
+app.config['UPLOAD_FOLDER_YAML'] = 'uploads/yaml'
+
+# Ensure upload folders exist
+os.makedirs(app.config['UPLOAD_FOLDER_CV'], exist_ok=True)
+os.makedirs(app.config['UPLOAD_FOLDER_RESUME'], exist_ok=True)
+os.makedirs(app.config['UPLOAD_FOLDER_YAML'], exist_ok=True)
 
 # Client class
 class Client(db.Model):
@@ -141,15 +152,14 @@ class Linkedin(db.Model):
     cv = db.Column(db.String(200), nullable=False)
     resume = db.Column(db.String(200), nullable=False)
     yaml_file = db.Column(db.String(200), nullable=False)
-    
-    # Add the user_id foreign key column
+    linkedin_status = db.Column(db.String(20), nullable=False, default='stopped')  # Add this line
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
-    # Define the relationship to the User model
     user = db.relationship('User', backref='linkedin_profiles')
 
     def __repr__(self):
         return f'<Linkedin {self.fullName}>'
+
 
 # Load user for Flask-Login
 @login_manager.user_loader
@@ -427,37 +437,46 @@ def delete_dice(dice_id):
     db.session.commit()
     return redirect(url_for('diceDashboard'))
 
-@app.route('/change_dice_status/<int:dice_id>', methods=['POST'])
+@app.route('/change_bot_status/<string:bot_type>/<int:bot_id>', methods=['POST'])
 @login_required  # Ensure the user is logged in
-def change_dice_status(dice_id):
-    print("hello")
+def change_bot_status(bot_type, bot_id):
+    """
+    Handle status updates for both LinkedIn and Dice bots.
+    """
     try:
         # Get the request body
         data = request.get_json()
         new_status = data.get('new_status')
-        print(new_status)
 
         # Validate the new status
         if new_status not in ['running', 'stopped']:
             return jsonify({'success': False, 'message': 'Invalid status value'}), 400
 
-        # Fetch the dice profile for the given dice_id
-        dice_profile = Dice.query.get_or_404(dice_id)
+        # Determine the bot type and fetch the corresponding profile
+        if bot_type == 'linkedin':
+            bot_profile = Linkedin.query.get_or_404(bot_id)
+        elif bot_type == 'dice':
+            bot_profile = Dice.query.get_or_404(bot_id)
+        else:
+            return jsonify({'success': False, 'message': 'Invalid bot type'}), 400
 
-        # Verify if the current user owns the dice
-        if dice_profile.user_id != current_user.id:
+        # Verify if the current user owns the bot
+        if bot_profile.user_id != current_user.id:
             return jsonify({'success': False, 'message': 'Unauthorized access'}), 403
 
-        # Update the dice status
-        dice_profile.dice_status = new_status
+        # Update the bot status
+        bot_profile.dice_status = new_status if bot_type == 'dice' else bot_profile.linkedin_status
+        setattr(bot_profile, 'dice_status' if bot_type == 'dice' else 'linkedin_status', new_status)
+
         db.session.commit()
 
-        return jsonify({'success': True, 'new_status': dice_profile.dice_status})
+        return jsonify({'success': True, 'new_status': new_status, 'bot_type': bot_type})
 
     except Exception as e:
         # Handle unexpected errors
         db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
+
 
 # getting dice profile status 
 @app.route('/get_dice_status/<int:dice_id>', methods=['GET'])
@@ -468,8 +487,6 @@ def get_dice_status(dice_id):
     
     return jsonify({'success': False, 'message': 'Dice not found or unauthorized'})
 
-
-from flask_login import current_user
 
 @app.route('/linkedinDashboard', methods=['GET', 'POST'])
 def linkedinDashboard():
@@ -493,15 +510,19 @@ def linkedinDashboard():
             flash('Invalid file type. Allowed file types are: PDF, DOCX, YAML.', 'error')
             return redirect(request.url)
 
-        # Secure the filenames and save them to the designated folder
+        # Secure the filenames
         cv_filename = secure_filename(cv.filename)
         resume_filename = secure_filename(resume.filename)
         yaml_filename = secure_filename(yaml_file.filename)
 
-        # Save the files
-        cv.save(os.path.join(app.config['UPLOAD_FOLDER'], cv_filename))
-        resume.save(os.path.join(app.config['UPLOAD_FOLDER'], resume_filename))
-        yaml_file.save(os.path.join(app.config['UPLOAD_FOLDER'], yaml_filename))
+        # Save the files to their respective folders
+        cv_path = os.path.join(app.config['UPLOAD_FOLDER_CV'], cv_filename)
+        resume_path = os.path.join(app.config['UPLOAD_FOLDER_RESUME'], resume_filename)
+        yaml_path = os.path.join(app.config['UPLOAD_FOLDER_YAML'], yaml_filename)
+
+        cv.save(cv_path)
+        resume.save(resume_path)
+        yaml_file.save(yaml_path)
 
         # Create a new Linkedin entry and store it in the database
         new_linkedin = Linkedin(
@@ -521,7 +542,7 @@ def linkedinDashboard():
         return redirect(url_for('linkedinDashboard'))
 
     # For GET request, display the dashboard
-    linkedin_entries = Linkedin.query.all()  # Retrieve all linkedin entries from the database
+    linkedin_entries = Linkedin.query.filter_by(user_id=current_user.id).all()
     return render_template('linkedinDashboard.html', linkedin_entries=linkedin_entries)
 
 
@@ -577,15 +598,29 @@ def delete_linkedin(linkedin_id):
     try:
         db.session.delete(linkedin_entry)
         db.session.commit()
-        flash('LinkedIn entry deleted successfully!', 'success')
     except Exception as e:
         db.session.rollback()  # Rollback if something goes wrong
-        flash(f'Error deleting LinkedIn entry: {str(e)}', 'danger')
     
     # Redirect to a dashboard or another page after deletion
     return redirect(url_for('linkedinDashboard'))
 
+# Download YAML file route
+@app.route('/download_yaml/<int:linkedin_id>')
+def download_yaml(linkedin_id):
+    # Find the LinkedIn entry by its ID
+    linkedin_entry = Linkedin.query.get_or_404(linkedin_id)
+    
+    # Create a response object with the YAML file content
+    response = app.response_class(
+        response=linkedin_entry.yaml_file,
+        status=200,
+        mimetype='application/x-yaml',
+        headers={
+            'Content-Disposition': f'attachment; filename={linkedin_entry.fullName}.yaml'
+        }
+    )
 
+    return response
 
 with app.app_context():
     db.create_all()  

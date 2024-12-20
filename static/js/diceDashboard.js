@@ -18,7 +18,7 @@ document.querySelectorAll('.toggleButton').forEach(button => {
 
         try {
             // Backend ko request bhejiye
-            const response = await fetch(`/change_dice_status/${diceId}`, {
+            const response = await fetch(`/change_bot_status/dice/${diceId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
