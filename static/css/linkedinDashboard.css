@@ -2,9 +2,9 @@
 .container {
     display: none; /* Form is hidden by default */
     position: fixed; /* Fixed positioning to stay on top of the page */
-    top: -100%; /* Initially positioned above the screen */
-    left: 30%; /* Center horizontally */
-    transform: translateX(-50%); /* Center alignment */
+    top: 50%; /* Vertically center */
+    left: 50%; /* Horizontally center */
+    transform: translate(-50%, -50%); /* Exactly center the form */
     z-index: 999; /* Ensure it appears above the dashboard */
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -28,21 +28,17 @@
 .container.show {
     display: block;
     opacity: 1;
-    transform: translateY(0); /* You can also use a sliding effect */
+    transform: translate(-50%, -42%); /* Ensure it stays centered */
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.page-wrapped {
-    display: flex;
-    flex-direction: column;
-    min-height: 74vh; /* Full viewport height */
-}
+
 /* Keyframes for sliding down over the dashboard */
 @keyframes slideDownOverDashboard {
     0% {
         top: -100%; /* Start above the screen */
     }
     100% {
-        top: 100px; /* Final position */
+        top: 50%; /* Final position centered vertically */
     }
 }
 
@@ -51,8 +47,6 @@
     .container {
         width: 80%; /* Adjust width for smaller screens */
         padding: 20px;
-        top: 50%; /* Adjust vertical position to center vertically */
-        transform: translateX(-50%); /* Center the form vertically */
     }
 }
 
@@ -60,8 +54,6 @@
     .container {
         width: 85%; /* Further adjust for very small screens */
         padding: 15px;
-        top: 50%; /* Center form vertically */
-        transform: translateX(-50%); /* Center vertically */
     }
 }
 
@@ -118,6 +110,7 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
 
 /* Dashboard Styles */
 .dashboard {
@@ -447,4 +440,13 @@ tr:hover {
     padding-left: 4px;
     padding-right: 3px;
     font-size: 20px;
+}
+#download_yaml {
+    padding-left: 4px;
+    padding-right: 3px;
+}
+.page-wrapped {
+    display: flex;
+    flex-direction: column;
+    min-height: 74vh; /* Full viewport height */
 }

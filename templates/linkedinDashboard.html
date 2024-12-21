@@ -38,7 +38,14 @@ Linkedin Dashboard - AutoJobs
             <label for="resume">Resume:</label>
             <input type="file" id="resume" name="resume" title="Only PDF file format accepted" required>
 
+            <!-- Download YAML file template  -->
+
+
             <label for="yamlFile">YAML File:</label>
+            <a href="{{ url_for('download_yaml') }}" name="download_yaml" id="download_yaml">
+                Download YAML Template
+                <i class="fas fa-download"></i>
+            </a>
             <input type="file" id="yamlFile" name="yamlFile" title="Please upload YAML file format" required>
 
             <button type="submit" id="submit-btn">Submit</button>
@@ -103,10 +110,6 @@ Linkedin Dashboard - AutoJobs
                                 <!-- View Logs Button -->
                                 <a href="#" class="btn btn-light">
                                     <i class="fa fa-eye" title="View Logs"></i>
-                                </a>
-                                <!-- Download YAML File -->
-                                <a href="{{ url_for('download_yaml', linkedin_id=linkedin.id) }}" class="btn btn-info">
-                                    <i class="fa fa-download" title="Download YAML"></i>
                                 </a>
                             </div>
                         </td>

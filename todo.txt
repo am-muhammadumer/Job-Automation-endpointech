@@ -1,5 +1,2 @@
-download yaml file                  <Check>
-check and dlete extra tables/models
-separate folders for uploads        <Check>
-understands all the models and code
 separate databases for bots and users
+same filename
