@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
+from flask import Flask, request, render_template, redirect, url_for, flash, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -36,13 +36,13 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-# # Define the upload folder
-# UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Define the upload folder
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# # Ensure that the upload folder exists
-# if not os.path.exists(UPLOAD_FOLDER):
-#     os.makedirs(UPLOAD_FOLDER)
+# Ensure that the upload folder exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Folder paths for file uploads
 app.config['UPLOAD_FOLDER_CV'] = 'uploads/cv'
@@ -55,19 +55,19 @@ os.makedirs(app.config['UPLOAD_FOLDER_RESUME'], exist_ok=True)
 os.makedirs(app.config['UPLOAD_FOLDER_YAML'], exist_ok=True)
 
 # Client class
-class Client(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', back_populates='clients')
+# class Client(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     user = db.relationship('User', back_populates='clients')
 
 # Invoice class
-class Invoice(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float)
-    date_created = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', back_populates='invoices')
+# class Invoice(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     amount = db.Column(db.Float)
+#     date_created = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+#     user = db.relationship('User', back_populates='invoices')
 
 # User class with username
 class User(db.Model, UserMixin):
@@ -76,17 +76,17 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
-    clients = db.relationship('Client', back_populates='user', lazy=True)
-    invoices = db.relationship('Invoice', back_populates='user', lazy=True)
-    activities = db.relationship('Activity', backref='user', lazy=True)
+    # clients = db.relationship('Client', back_populates='user', lazy=True)
+    # invoices = db.relationship('Invoice', back_populates='user', lazy=True)
+    # activities = db.relationship('Activity', backref='user', lazy=True)
 
 # Activity class
-class Activity(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255))
-    date = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
-    status = db.Column(db.String(50))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+# class Activity(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     description = db.Column(db.String(255))
+#     date = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
+#     status = db.Column(db.String(50))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class JobApplication(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,9 +111,7 @@ class ContactForm(db.Model):
     def __repr__(self):
         return f'<ContactForm {self.name}>'
 
-
-    
-
+# Define the Dice model
 class Dice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullName = db.Column(db.String(100), nullable=False)
@@ -144,6 +142,7 @@ class Payment(db.Model):
     def __repr__(self):
         return f"<Payment {self.id} - Plan: {self.plan}, User ID: {self.id}>"
 
+# Define the Linkedin model
 class Linkedin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullName = db.Column(db.String(100), nullable=False)
@@ -489,6 +488,7 @@ def get_dice_status(dice_id):
 
 
 @app.route('/linkedinDashboard', methods=['GET', 'POST'])
+@login_required
 def linkedinDashboard():
     if request.method == 'POST':
         # Extract data from the form
@@ -515,11 +515,12 @@ def linkedinDashboard():
         resume_filename = secure_filename(resume.filename)
         yaml_filename = secure_filename(yaml_file.filename)
 
-        # Save the files to their respective folders
+        # Save the files to their respective folders (Overwriting if the file already exists)
         cv_path = os.path.join(app.config['UPLOAD_FOLDER_CV'], cv_filename)
         resume_path = os.path.join(app.config['UPLOAD_FOLDER_RESUME'], resume_filename)
         yaml_path = os.path.join(app.config['UPLOAD_FOLDER_YAML'], yaml_filename)
 
+        # Overwrite the existing files
         cv.save(cv_path)
         resume.save(resume_path)
         yaml_file.save(yaml_path)
@@ -605,22 +606,30 @@ def delete_linkedin(linkedin_id):
     return redirect(url_for('linkedinDashboard'))
 
 # Download YAML file route
-@app.route('/download_yaml/<int:linkedin_id>')
-def download_yaml(linkedin_id):
-    # Find the LinkedIn entry by its ID
-    linkedin_entry = Linkedin.query.get_or_404(linkedin_id)
+# @app.route('/download_yaml/<int:linkedin_id>')
+# def download_yaml(linkedin_id):
+#     # Find the LinkedIn entry by its ID
+#     linkedin_entry = Linkedin.query.get_or_404(linkedin_id)
     
-    # Create a response object with the YAML file content
-    response = app.response_class(
-        response=linkedin_entry.yaml_file,
-        status=200,
-        mimetype='application/x-yaml',
-        headers={
-            'Content-Disposition': f'attachment; filename={linkedin_entry.fullName}.yaml'
-        }
-    )
+#     # Create a response object with the YAML file content
+#     response = app.response_class(
+#         response=linkedin_entry.yaml_file,
+#         status=200,
+#         mimetype='application/x-yaml',
+#         headers={
+#             'Content-Disposition': f'attachment; filename={linkedin_entry.fullName}.yaml'
+#         }
+#     )
 
-    return response
+#     return response
+
+@app.route('/download-yaml')
+def download_yaml():
+    # Ensure the directory and file path are correct
+    directory = "static/SampleYaml"  # Folder containing the file
+    filename = "sampleFile.yaml"    # Name of the YAML file
+
+    return send_from_directory(directory=directory, path=filename, as_attachment=True)
 
 with app.app_context():
     db.create_all()  
